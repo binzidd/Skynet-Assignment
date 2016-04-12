@@ -1,6 +1,6 @@
 import struct
 
-from Crypto.Cipher import XOR
+from Crypto.Hash import HMAC,SHA256
 from Crypto.Cipher import AES
 from CNS.dh import create_dh_key, calculate_dh_secret
 from CNS.dh import aes_iv
@@ -30,6 +30,7 @@ class StealthConn(object):
             print("Shared hash: {}".format(shared_hash))
             iv = aes_iv()
             self.cipher = AES.new(shared_hash, AES.MODE_CBC, iv)
+
 
     def send(self, data):
         if self.cipher:
