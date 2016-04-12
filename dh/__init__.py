@@ -52,24 +52,18 @@ raw_prime = """FFFFFFFF FFFFFFFF C90FDAA2 2168C234 C4C6628B 80DC1CD1
       60C980DD 98EDD3DF FFFFFFFF FFFFFFFF"""
 # Convert from the value supplied in the RFC to an integer
 prime = read_hex(raw_prime)
+generator = 2
 
 # Project TODO: write the appropriate code to perform DH key exchange
 
 def create_dh_key():
     # Creates a Diffie-Hellman key
     # Returns (public, private)
-    a = random.randint(0, int(2**8))
-    return (a, a)
+    myprivate = random.randint(0, int(2 ** 64))  # The private value generated from the keyspace of 2^64 randomly
+    mypublic = pow(generator, myprivate, prime)
+    return (mypublic, myprivate)
 
 def calculate_dh_secret(their_public, my_private):
-    # Calculate the shared secret
-    shared_secret = their_public * my_private
-
-    # Hash the value so that:
-    # (a) There's no bias in the bits of the output
-    #     (there may be bias if the shared secret is used raw)
-    # (b) We can convert to raw bytes easily
-    # (c) We could add additional information if we wanted
-    # Feel free to change SHA256 to a different value if more appropriate
+    shared_secret = pow(their_public, my_private, prime)
     shared_hash = SHA256.new(bytes(shared_secret, "ascii")).hexdigest()
     return shared_hash
