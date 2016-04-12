@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="efdd82a7-8fcb-415d-9ce0-3dbda39a1cf8" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/comms.py" afterPath="$PROJECT_DIR$/lib/comms.py" />
     </list>
     <ignored path="CNS.iws" />
