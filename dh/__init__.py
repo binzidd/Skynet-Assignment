@@ -1,7 +1,9 @@
 from Crypto.Hash import SHA256
 from Crypto.Random import random
+from Crypto.Hash import HMAC
 
-from lib.helpers import read_hex
+from CNS.lib.helpers import read_hex
+
 
 # Project TODO: Is this the best choice of prime? Why? Why not? Feel free to replace!
 
@@ -72,3 +74,5 @@ def aes_iv():
     iv=random.randint (0, int(2 ** 128))
     hash_iv= SHA256.new(bytes(iv,"ascii")).hexdigest()
     return hash_iv
+
+
