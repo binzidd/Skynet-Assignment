@@ -13,6 +13,7 @@ class StealthConn(object):
         self.server = server
         self.verbose = verbose
         self.initiate_session()
+        counter = None
 
     def initiate_session(self):
         # Perform the initial connection handshake for agreeing on a shared secret
@@ -31,17 +32,21 @@ class StealthConn(object):
             iv = aes_iv()
             self.cipher = AES.new(shared_hash, AES.MODE_CBC, iv)
 
-
-    def send(self, data):
+    def send(self, data, shared_hash,counter):
+        #HMAC of data to obtain integrity
+        data_hmac = HMAC.new(shared_hash, digestmod=SHA256)
+        data_hmac.update(data)
+        data_hmac.digest()
+        #counter_send = counter
+        for
         if self.cipher:
-            encrypted_data = self.cipher.encrypt(data)
-            if self.verbose:
-                print("Original data: {}".format(data))
-                print("Encrypted data: {}".format(repr(encrypted_data)))
-                print("Sending packet of length {}".format(len(encrypted_data)))
+            encrypted_data = self.cipher.encrypt(data_hmac + data + counter_send)
+        if self.verbose:
+            print("Original data: {}".format(data))
+            print("Encrypted data: {}".format(repr(encrypted_data)))
+            print("Sending packet of length {}".format(len(encrypted_data)))
         else:
             encrypted_data = data
-
         # Encode the data's length into an unsigned two byte int ('H')
         pkt_len = struct.pack('H', len(encrypted_data))
         self.conn.sendall(pkt_len)
@@ -52,8 +57,8 @@ class StealthConn(object):
         pkt_len_packed = self.conn.recv(struct.calcsize('H'))
         unpacked_contents = struct.unpack('H', pkt_len_packed)
         pkt_len = unpacked_contents[0]
-
         encrypted_data = self.conn.recv(pkt_len)
+
         if self.cipher:
             data = self.cipher.decrypt(encrypted_data)
             if self.verbose:
